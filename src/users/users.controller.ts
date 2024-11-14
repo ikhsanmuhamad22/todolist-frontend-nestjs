@@ -1,21 +1,30 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
-  Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { userDTO } from './dto/user.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
+  @UseGuards(JwtAuthGuard) // Pastikan guard ini diterapkan
+  @Get('profile')
+  getProfile(@Req() req) {
+    console.log('==> req.user', req.user);
+    return req.user; // req.user seharusnya berisi data user setelah autentikasi
+  }
+
   @Get()
   findAll() {
+    console.log('==> findAll', this.userService.findAll());
     return this.userService.findAll();
   }
 
@@ -27,15 +36,5 @@ export class UsersController {
   @Post()
   create(@Body() createUserDTO: userDTO) {
     return this.userService.create(createUserDTO);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: userDTO) {
-    return this.userService.update(Number(id), updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(Number(id));
   }
 }

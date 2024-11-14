@@ -3,21 +3,22 @@ import { userDTO } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
-  private users = [];
+  private users: userDTO[] = [];
 
   findAll() {
     return this.users;
   }
 
-  findById(id: number) {
+  findById(id: number): userDTO | undefined {
     const user = this.users.find((u) => u.id === id);
+    console.log('==> user', this.users);
     if (!user) {
       throw new NotFoundException(`user with id ${id} not found`);
     }
     return user;
   }
 
-  findByEmail(email: string) {
+  findByEmail(email: string): userDTO | undefined {
     const findByEmail = this.users.find((u) => u.email === email);
     if (!email) {
       throw new NotFoundException('email not found');
@@ -28,25 +29,8 @@ export class UsersService {
   create(createUserDTO: userDTO) {
     const newUser = { id: Date.now(), ...createUserDTO };
     this.users.push(newUser);
+    console.log('User added:', newUser); // Log user yang ditambahkan
+    console.log('All users:', this.users);
     return newUser;
-  }
-
-  update(id: number, updateUserDTO: userDTO) {
-    const userIndex = this.users.findIndex((u) => u.id === id);
-    if (userIndex === -1) {
-      throw new NotFoundException('user not found');
-    }
-    const updateUser = { ...this.users[userIndex], ...updateUserDTO };
-    this.users[userIndex] = updateUser;
-    return 'User has benn update';
-  }
-
-  remove(id: number) {
-    const userIndex = this.users.findIndex((u) => u.id === id);
-    if (userIndex === -1) {
-      throw new NotFoundException('user not found');
-    }
-    this.users.splice(userIndex, 1);
-    return 'User has been deleted';
   }
 }
