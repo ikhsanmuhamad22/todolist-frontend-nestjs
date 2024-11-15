@@ -18,13 +18,11 @@ export class UsersController {
   @UseGuards(JwtAuthGuard) // Pastikan guard ini diterapkan
   @Get('profile')
   getProfile(@Req() req) {
-    console.log('==> req.user', req.user);
     return req.user; // req.user seharusnya berisi data user setelah autentikasi
   }
 
   @Get()
   findAll() {
-    console.log('==> findAll', this.userService.findAll());
     return this.userService.findAll();
   }
 

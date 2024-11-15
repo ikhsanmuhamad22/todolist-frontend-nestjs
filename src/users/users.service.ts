@@ -11,7 +11,6 @@ export class UsersService {
 
   findById(id: number): userDTO | undefined {
     const user = this.users.find((u) => u.id === id);
-    console.log('==> user', this.users);
     if (!user) {
       throw new NotFoundException(`user with id ${id} not found`);
     }
@@ -29,8 +28,6 @@ export class UsersService {
   create(createUserDTO: userDTO) {
     const newUser = { id: Date.now(), ...createUserDTO };
     this.users.push(newUser);
-    console.log('User added:', newUser); // Log user yang ditambahkan
-    console.log('All users:', this.users);
     return newUser;
   }
 }
