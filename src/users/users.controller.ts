@@ -8,8 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { userDTO } from './dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from './user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -23,16 +23,16 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.userService.findAll();
+    return;
   }
 
   @Get(':id')
   findById(@Param('id') id: string) {
-    return this.userService.findById(Number(id));
+    return id;
   }
 
   @Post()
-  create(@Body() createUserDTO: userDTO) {
-    return this.userService.create(createUserDTO);
+  create(@Body() userData: Partial<User>) {
+    return this.userService.create(userData);
   }
 }
