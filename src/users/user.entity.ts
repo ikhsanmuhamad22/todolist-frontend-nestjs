@@ -1,5 +1,5 @@
-// src/users/user.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Todo } from 'src/todolist/todo.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -14,4 +14,7 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Todo, (todo) => todo.user)
+  todos: Todo[]; // Relasi ke Todo
 }

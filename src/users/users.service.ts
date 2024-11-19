@@ -13,7 +13,6 @@ export class UsersService {
     const salt = await bcrypt.genSalt(10);
     userData.password = await bcrypt.hash(userData.password, salt);
     const user = this.usersRepository.create(userData);
-    console.log('masukkk');
     return this.usersRepository.save(user);
   }
 
