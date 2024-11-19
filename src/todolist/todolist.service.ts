@@ -9,8 +9,36 @@ export class TodolistService {
   @InjectRepository(Todo)
   private readonly todoRepository: Repository<Todo>;
 
-  async create(title: string, user: User): Promise<Todo> {
+  create(title: string, user: User): Promise<Todo> {
     const newTodo = this.todoRepository.create({ title, user });
     return this.todoRepository.save(newTodo);
+  }
+
+  async findByUserId(userId: number): Promise<Todo[]> {
+    const response = await this.todoRepository.find({
+      where: { user: { id: userId } },
+    });
+    return response;
+  }
+
+  async updateStatusTodo(todoId: number) {
+    const response = await this.todoRepository
+      .createQueryBuilder()
+      .update(Todo)
+      .set({ isComplated: true })
+      .where({ id: todoId })
+      .execute();
+    return response;
+  }
+
+  async deleteTodoByUser(todoId: number) {
+    const response = await this.todoRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Todo)
+      .where({ id: todoId })
+      .execute();
+
+    return response;
   }
 }
